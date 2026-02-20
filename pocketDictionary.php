@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dictionary UI Template</title>
+<title>Pocket online Dictionary</title>
 <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
 
 <div class="container">
+    
     <!-- Search form here -->
     <form action="<?php  htmlspecialchars( $_SERVER['PHP_SELF']);?>" method="post">
             <div class="search-box">
@@ -28,34 +29,40 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
         // data coming from the form
         $response = file_get_contents($url);
         $data = json_decode($response,True);
-        echo "<!-- Word Header -->
+        ?> 
+        <!-- Word Header -->
         <div class='word-header'>
             <div>
-                <h1>$word</h1>
+                <h1><?php echo $word; ?></h1>
                 <p class='phonetic'>/ɪɡˈzɑːmpəl/</p>
             </div>
             <div class='play-btn'>▶</div>
-        </div>";
-        
+        </div>
+        <?php
         foreach ($data[0]['meanings'] as $meaning) {
-            echo " <div class='section'><!-- START section -->
-                       <div class=section-title'>
-                            <span>".$meaning['partOfSpeech']."</span>
-                            <div class='line'></div>
-                       </div>";
-        ?>
+            ?>
+            <div class='section'><!-- START section -->
+                <div class='section-title'>
+                    <span><?php echo $meaning['partOfSpeech']; ?></span>
+                    <div class='line'></div>
+                </div>
+        
             <ul>
-             <?php   
+             <p class="meaning-label">Meaning</p>
+            <?php   
             foreach ($meaning['definitions'] as $definition) {
-                        echo " <li>".$definition['definition']."</li>";
-                     if (isset($definition['example'])) {
-                echo "<p><em><b>Example: " . $definition['example']."</b></em></p>";
-            }
-
+                ?>
                
-            }?>
-            </ul>
-
+                
+                    <li><?php echo $definition['definition'];?></li>
+                <?php    
+                     if (isset($definition['example'])) {
+                ?>
+                <p><em><b>Example: <?php echo $definition['example'];?></b></em></p>
+            <?php
+            }  }
+            ?>
+            </ul></div><!-- END section -->
             <?php
              
         }
@@ -65,8 +72,6 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
 
 ?>
 
-    
-<!------------- definations start here------------------->
 </div><!--END CONTAINER-->
 
 </body>
