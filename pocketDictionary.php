@@ -19,9 +19,14 @@
         if (empty($_POST['wordToSearch'])) {
             echo '<div class="error"><p>Please enter the word to search</p></div>';
         }else{
+           
+            if (isset($response)==false){
+                echo '<div class="error"><p>Word not found please check the correct spelling</p></div>';
+            }else{
+            $response = file_get_contents($url);
             $word = $_POST['wordToSearch'];  // word to search 
             $url = "https://api.dictionaryapi.dev/api/v2/entries/en/".urlencode($word);
-            
+
             // data coming from the form
             $response = file_get_contents($url);
             $data = json_decode($response,True);
@@ -56,7 +61,7 @@
                     ?>
                     <p><em><b>Example: <?php echo $definition['example'];?></b></em></p>
                 <?php
-                }  }
+                }  } }
                 ?>
                 </ul></div><!-- END section -->
                 <?php
